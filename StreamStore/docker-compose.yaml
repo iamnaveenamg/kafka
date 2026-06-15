@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: kafka
+    ports:
+      - "9092:9092"
+
+    environment:
+      KAFKA_KRAFT_MODE: 'true'
+
+      CLUSTER_ID: '1L6g7nGhU-eAKfL--X25wo'  # Random String
+      KAFKA_NODE_ID: 1
+
+      KAFKA_PROCESS_ROLES: 'broker, controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@localhost:9093'     #1@kafka:9093, 2@kafka:9093    Here I made new Change
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # It will store only one copy and no backup will be available, but for production we will increase and take back up copies . and Default value is 3
+
+      KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093'  # Specifies the network interface and ports on which the broker listens for incoming connections from client and other brokers
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://localhost:9092' # Defines the addresses that kafka tells clients or brokers to connect to
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+
+
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+
+    volumes:
+      - kafka_kraft:/var/lib/kafka/data
+       #- kafka_kraft: /var/lib/kafka/data # here all the data stored inside the container
+
+volumes:
+  kafka_kraft:
+

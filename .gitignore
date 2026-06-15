@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# Remove local files for Repo
+StreamStore/.venv
+StreamStore/.idea
